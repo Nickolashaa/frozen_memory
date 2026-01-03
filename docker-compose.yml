@@ -1,0 +1,41 @@
+services:
+  database:
+    image: postgres:16
+    container_name: frozen_memory_db
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"  # External:Internal
+    networks:
+      - bot_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: frozen_memory_bot
+    restart: unless-stopped
+    env_file:
+      - .env
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - bot_network
+    volumes:
+      - .:/app
+
+networks:
+  bot_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
