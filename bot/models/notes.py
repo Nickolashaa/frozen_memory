@@ -16,4 +16,4 @@ class Note(Base):
         BigInteger, ForeignKey(User.id, ondelete="CASCADE")
     )
     text: Mapped[str] = mapped_column(String, nullable=False)
-    created_at: Mapped[datetime] = mapped_column(TIMESTAMP, default=datetime.now())
+    created_at: Mapped[datetime] = mapped_column(TIMESTAMP, default=datetime.now)
