@@ -31,7 +31,8 @@ services:
     networks:
       - bot_network
     volumes:
-      - .:/app
+      - ./alembic.ini:/app/alembic.ini
+      - ./alembic:/app/alembic
 
 networks:
   bot_network:
