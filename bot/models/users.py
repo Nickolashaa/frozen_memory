@@ -16,4 +16,4 @@ class User(Base):
     username: Mapped[str | None] = mapped_column(String, nullable=True)
     first_name: Mapped[str] = mapped_column(String, nullable=False)
     last_name: Mapped[str | None] = mapped_column(String, nullable=True)
-    created_at: Mapped[datetime] = mapped_column(TIMESTAMP, default=datetime.now())
+    created_at: Mapped[datetime] = mapped_column(TIMESTAMP, default=datetime.now)
