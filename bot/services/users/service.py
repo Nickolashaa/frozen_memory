@@ -31,3 +31,17 @@ class UserService:
         instance = res.scalar_one()
 
         return UserDTO.model_validate(obj=instance, from_attributes=True)
+
+    @staticmethod
+    async def get_all(
+        session: AsyncSession,
+    ) -> list[UserDTO]:
+        stmt = select(User)
+
+        res = await session.execute(stmt)
+        instances = res.scalars()
+
+        return [
+            UserDTO.model_validate(obj=instance, from_attributes=True)
+            for instance in instances
+        ]
