@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
     TG_TOKEN: str
+    ADMIN: str
 
     class Config:
         env_file = ".env"
