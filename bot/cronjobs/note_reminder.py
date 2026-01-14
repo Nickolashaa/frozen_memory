@@ -1,3 +1,4 @@
+from asyncio import sleep
 from datetime import datetime, timedelta
 from random import choice
 
@@ -5,7 +6,9 @@ from aiogram import Bot
 
 import pytz
 
-from sqlalchemy import and_, select
+from sqlalchemy import and_, delete, select
+
+from config import settings
 
 from ..database import async_session_maker
 from ..models import Note, User
@@ -56,8 +59,21 @@ async def note_remind(bot: Bot) -> None:
 
         res = await session.execute(stmt)
 
+        will_deleted = []
+
         for user in res.scalars():
-            await bot.send_message(
-                chat_id=user.id,
-                text=choice(reminders),
-            )
+            try:
+                await bot.send_message(
+                    chat_id=user.id,
+                    text=choice(reminders),
+                )
+                await sleep(0.2)
+            except Exception:
+                await bot.send_message(
+                    chat_id=settings.ADMIN,
+                    text=f"Пользователь {user.first_name + ' ' + user.last_name if user.last_name is not None else user.first_name} заблрокировал бота :(",
+                )
+                will_deleted.append(user.id)
+
+        stmt = delete(User).where(User.id.in_(will_deleted))
+        await session.execute(stmt)
