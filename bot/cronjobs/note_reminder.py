@@ -77,3 +77,4 @@ async def note_remind(bot: Bot) -> None:
 
         stmt = delete(User).where(User.id.in_(will_deleted))
         await session.execute(stmt)
+        await session.commit()
