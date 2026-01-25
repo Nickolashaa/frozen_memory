@@ -9,7 +9,7 @@ class VoiceToTextService:
     @classmethod
     def _get_model(cls):
         if cls._model is None:
-            cls._model = WhisperModel("base", device="cpu", compute_type="int8")
+            cls._model = WhisperModel("small", device="cpu", compute_type="int8")
         return cls._model
 
     @staticmethod

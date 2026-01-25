@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     POSTGRES_PASSWORD: str
     TG_TOKEN: str
     ADMIN: str
+    AI_TOKEN: str
 
     class Config:
         env_file = ".env"
