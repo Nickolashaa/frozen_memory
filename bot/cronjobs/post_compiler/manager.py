@@ -18,8 +18,12 @@ async def generate_posts(
     async with async_session_maker() as session:
         compiled_data_list = await compile(session=session, interval=interval)
 
-        for data in compiled_data_list:
+        for i, data in enumerate(compiled_data_list):
             try:
+                await bot.send_message(
+                    chat_id=settings.ADMIN,
+                    text=f"Генерирую пост для {data.user_name} {i + 1}/{len(compiled_data_list)}",
+                )
                 post = await PostGenerator.generate_post(data)
                 await bot.send_message(
                     chat_id=data.user_id, text=post, parse_mode="HTML"
